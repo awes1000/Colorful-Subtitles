@@ -50,11 +50,11 @@ public final class ColorfulSubtitles {
 			JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
 			DataResult<Pair<ColorfulSubtitlesConfig, JsonElement>> result = ColorfulSubtitlesConfig.CODEC.decode(JsonOps.INSTANCE, json);
 
-			return result.get().left().get().getFirst();
+			return result.getOrThrow().getFirst();
 		} catch (FileNotFoundException exception) {
 			try (Writer writer = new BufferedWriter(new FileWriter(file))) {
 				DataResult<JsonElement> result = ColorfulSubtitlesConfig.CODEC.encodeStart(JsonOps.INSTANCE, ColorfulSubtitlesConfig.DEFAULT);
-				new Gson().toJson(result.get().left().get(), writer);
+				new Gson().toJson(result.getOrThrow(), writer);
 
 				LOGGER.warn("Could not find Colorful Subtitles config; wrote default to file");
 			} catch (Exception writeException) {
