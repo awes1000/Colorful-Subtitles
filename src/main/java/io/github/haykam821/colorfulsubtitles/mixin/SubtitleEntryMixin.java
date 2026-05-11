@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.Unique;
 import io.github.haykam821.colorfulsubtitles.ColorHolder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.hud.SubtitlesHud;
+import net.minecraft.client.gui.components.SubtitleOverlay;
 
-@Mixin(SubtitlesHud.SubtitleEntry.class)
+@Mixin(SubtitleOverlay.Subtitle.class)
 @Environment(EnvType.CLIENT)
 public class SubtitleEntryMixin implements ColorHolder {
 	@Unique

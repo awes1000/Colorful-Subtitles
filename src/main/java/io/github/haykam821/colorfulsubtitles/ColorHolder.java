@@ -4,29 +4,29 @@ import io.github.haykam821.colorfulsubtitles.config.ColorfulSubtitlesConfig;
 import io.github.haykam821.colorfulsubtitles.config.SubtitleColor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.math.ColorHelper;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.util.ARGB;
 
 @Environment(EnvType.CLIENT)
 public interface ColorHolder {
-	public int getTextColor();
-	public void setTextColor(int color);
+	int getTextColor();
+	void setTextColor(int color);
 
-	public int getBackgroundColor();
-	public void setBackgroundColor(int color);
+	int getBackgroundColor();
+	void setBackgroundColor(int color);
 
-	public default void setColor(SoundInstance sound) {
+	default void setColor(SoundInstance sound) {
 		ColorfulSubtitlesConfig config = ColorfulSubtitles.getConfig();
-		SubtitleColor color = config.getColorForCategory(sound.getCategory());
+		SubtitleColor color = config.getColorForCategory(sound.getSource());
 
-		this.setTextColor(ColorHelper.fullAlpha(color.getText().getRgb()));
+		this.setTextColor(ARGB.opaque(color.getText().getValue()));
 
 		if (color.getBackground().isPresent()) {
-			this.setBackgroundColor(color.getBackground().get().getRgb());
+			this.setBackgroundColor(color.getBackground().get().getValue());
 		} else {
 			SubtitleColor defaultColor = config.getDefaultColor();
-			this.setBackgroundColor(defaultColor.getBackground().map(TextColor::getRgb).orElse(-1));
+			this.setBackgroundColor(defaultColor.getBackground().map(TextColor::getValue).orElse(-1));
 		}
 	}
 }

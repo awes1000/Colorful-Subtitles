@@ -6,42 +6,41 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.sounds.SoundSource;
 
 public class ColorfulSubtitlesConfig {
-	private static final Map<SoundCategory, SubtitleColor> DEFAULT_COLORS = ImmutableMap.<SoundCategory, SubtitleColor>builder()
-		.put(SoundCategory.MUSIC, SubtitleColor.ofText(Formatting.DARK_PURPLE))
-		.put(SoundCategory.RECORDS, SubtitleColor.ofText(Formatting.DARK_RED))
-		.put(SoundCategory.WEATHER, SubtitleColor.ofText(Formatting.AQUA))
-		.put(SoundCategory.BLOCKS, SubtitleColor.ofText(Formatting.GREEN))
-		.put(SoundCategory.HOSTILE, SubtitleColor.ofText(Formatting.RED))
-		.put(SoundCategory.NEUTRAL, SubtitleColor.ofText(Formatting.YELLOW))
-		.put(SoundCategory.PLAYERS, SubtitleColor.ofText(Formatting.GOLD))
-		.put(SoundCategory.AMBIENT, SubtitleColor.ofText(Formatting.GRAY))
-		.put(SoundCategory.VOICE, SubtitleColor.ofText(Formatting.LIGHT_PURPLE))
-		.put(SoundCategory.UI, SubtitleColor.ofText(Formatting.BLUE))
+	private static final Map<SoundSource, SubtitleColor> DEFAULT_COLORS = ImmutableMap.<SoundSource, SubtitleColor>builder()
+		.put(SoundSource.MUSIC, SubtitleColor.ofText(ChatFormatting.DARK_PURPLE))
+		.put(SoundSource.RECORDS, SubtitleColor.ofText(ChatFormatting.DARK_RED))
+		.put(SoundSource.WEATHER, SubtitleColor.ofText(ChatFormatting.AQUA))
+		.put(SoundSource.BLOCKS, SubtitleColor.ofText(ChatFormatting.GREEN))
+		.put(SoundSource.HOSTILE, SubtitleColor.ofText(ChatFormatting.RED))
+		.put(SoundSource.NEUTRAL, SubtitleColor.ofText(ChatFormatting.YELLOW))
+		.put(SoundSource.PLAYERS, SubtitleColor.ofText(ChatFormatting.GOLD))
+		.put(SoundSource.AMBIENT, SubtitleColor.ofText(ChatFormatting.GRAY))
+		.put(SoundSource.VOICE, SubtitleColor.ofText(ChatFormatting.LIGHT_PURPLE))
 		.build();
 
 	public static final ColorfulSubtitlesConfig DEFAULT = new ColorfulSubtitlesConfig(DEFAULT_COLORS, SubtitleColor.DEFAULT);
 
 	public static final Codec<ColorfulSubtitlesConfig> CODEC = RecordCodecBuilder.create(instance -> {
 		return instance.group(
-			ColorfulSubtitlesCodecs.SOUND_CATEGORY_TO_SUBTITLE_COLOR.optionalFieldOf("colors", DEFAULT_COLORS).forGetter(config -> config.colors),
+			ColorfulSubtitlesCodecs.SOUND_SOURCE_TO_SUBTITLE_COLOR.optionalFieldOf("colors", DEFAULT_COLORS).forGetter(config -> config.colors),
 			SubtitleColor.CODEC.optionalFieldOf("default_color", SubtitleColor.DEFAULT).forGetter(config -> config.defaultColor)
 		).apply(instance, ColorfulSubtitlesConfig::new);
 	});
 
-	private final Map<SoundCategory, SubtitleColor> colors;
+	private final Map<SoundSource, SubtitleColor> colors;
 	private final SubtitleColor defaultColor;
 
-	private ColorfulSubtitlesConfig(Map<SoundCategory, SubtitleColor> colors, SubtitleColor defaultColor) {
+	private ColorfulSubtitlesConfig(Map<SoundSource, SubtitleColor> colors, SubtitleColor defaultColor) {
 		this.colors = colors;
 		this.defaultColor = defaultColor;
 	}
 
-	public SubtitleColor getColorForCategory(SoundCategory category) {
-		SubtitleColor color = this.colors.get(category);
+	public SubtitleColor getColorForCategory(SoundSource source) {
+		SubtitleColor color = this.colors.get(source);
 		return color == null ? this.defaultColor : color;
 	}
 

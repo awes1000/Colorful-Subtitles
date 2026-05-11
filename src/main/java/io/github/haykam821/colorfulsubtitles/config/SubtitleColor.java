@@ -6,18 +6,16 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TextColor;
 
 public class SubtitleColor {
 	protected static final SubtitleColor DEFAULT = SubtitleColor.ofText(TextColor.fromRgb(0xFFFFFF));
 
-	private static final Codec<SubtitleColor> RECORD_CODEC = RecordCodecBuilder.create(instance -> {
-		return instance.group(
+	private static final Codec<SubtitleColor> RECORD_CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			TextColor.CODEC.fieldOf("text").forGetter(color -> color.text),
 			TextColor.CODEC.optionalFieldOf("background").forGetter(color -> color.background)
-		).apply(instance, SubtitleColor::new);
-	});
+	).apply(instance, SubtitleColor::new));
 
 	private static final Codec<SubtitleColor> SIMPLE_CODEC = TextColor.CODEC.xmap(SubtitleColor::ofText, color -> color.text);
 
@@ -52,7 +50,7 @@ public class SubtitleColor {
 		return new SubtitleColor(text, Optional.empty());
 	}
 
-	public static SubtitleColor ofText(Formatting formatting) {
-		return SubtitleColor.ofText(TextColor.fromFormatting(formatting));
+	public static SubtitleColor ofText(ChatFormatting formatting) {
+		return SubtitleColor.ofText(TextColor.fromLegacyFormat(formatting));
 	}
 }

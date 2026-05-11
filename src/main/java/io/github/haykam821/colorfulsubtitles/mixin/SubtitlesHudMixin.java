@@ -15,49 +15,47 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import io.github.haykam821.colorfulsubtitles.ColorHolder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.hud.SubtitlesHud;
-import net.minecraft.client.gui.hud.SubtitlesHud.SubtitleEntry;
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.client.sound.WeightedSoundSet;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.ColorHelper;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.SubtitleOverlay;
+import net.minecraft.client.gui.components.SubtitleOverlay.Subtitle;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.sounds.WeighedSoundEvents;
+import net.minecraft.network.chat.Component;
 
-@Mixin(SubtitlesHud.class)
+@Mixin(SubtitleOverlay.class)
 @Environment(EnvType.CLIENT)
 public class SubtitlesHudMixin {
 	@Unique
 	private ColorHolder iterationEntry;
 
-	@Redirect(method = "render", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;", ordinal = 2))
+	@Redirect(method = "extractRenderState", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;", ordinal = 2))
 	private Object updateIterationEntry(Iterator<Object> iterator) {
 		return this.iterationEntry = (ColorHolder) iterator.next();
 	}
 
-	@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V"), index = 4)
+	@ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"), index = 4)
 	private int modifyTextDrawColor(int color) {
-		return ColorHelper.mix(color, this.iterationEntry.getTextColor());
+		return this.iterationEntry.getTextColor();
 	}
 
-	@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V"), index = 4)
+	@ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fill(IIIII)V"), index = 4)
 	private int modifyBackgroundDrawColor(int color) {
 		int backgroundColor = this.iterationEntry.getBackgroundColor();
 
-		// Use vanilla background color
 		if (backgroundColor < 0) {
 			return color;
 		}
 
-		// Use custom color with vanilla opacity
 		return color | backgroundColor;
 	}
 
-	@Inject(method = "onSoundPlayed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/SubtitlesHud$SubtitleEntry;reset(Lnet/minecraft/util/math/Vec3d;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void resetColor(SoundInstance sound, WeightedSoundSet soundSet, float range, CallbackInfo ci, Text text, Iterator<SubtitleEntry> iterator, SubtitleEntry entry) {
+	@Inject(method = "onPlaySound", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/SubtitleOverlay$Subtitle;refresh(Lnet/minecraft/world/phys/Vec3;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
+	private void resetColor(SoundInstance sound, WeighedSoundEvents soundSet, float range, CallbackInfo ci, Component text, Iterator<Subtitle> iterator, Subtitle entry) {
 		((ColorHolder) entry).setColor(sound);
 	}
 
-	@Redirect(method = "onSoundPlayed", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-	private boolean setColor(List<Object> entries, Object entry, SoundInstance sound, WeightedSoundSet soundSet) {
+	@Redirect(method = "onPlaySound", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
+	private boolean setColor(List<Object> entries, Object entry, SoundInstance sound, WeighedSoundEvents soundSet) {
 		((ColorHolder) entry).setColor(sound);
 		return entries.add(entry);
 	}
