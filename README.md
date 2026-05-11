@@ -26,4 +26,3 @@ When this mod is installed, subtitles will automatically have a different color 
 * Players: gold
 * Ambient: gray
 * Voice: light purple
-* UI: blue
