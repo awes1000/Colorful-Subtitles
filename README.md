@@ -1,14 +1,10 @@
 # Colorful Subtitles
 Forked for personal use
+most codes changed by claude code,maybe mang bugs
 
 Changes the color of subtitles based on their sound category.
 
 Colorful Subtitles requires the [Fabric modloader](https://fabricmc.net/use/).
-
-## Installation
-
-1. Download Colorful Subtitles from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/colorful-subtitles/files) or [GitHub](https://github.com/haykam821/Colorful-Subtitles/releases).
-2. Place the downloaded file in your `mods` folder.
 
 ## Usage
 
