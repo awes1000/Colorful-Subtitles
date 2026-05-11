@@ -1,5 +1,6 @@
 # Colorful Subtitles
 Forked for personal use
+
 most codes changed by claude code,maybe mang bugs
 
 Changes the color of subtitles based on their sound category.
