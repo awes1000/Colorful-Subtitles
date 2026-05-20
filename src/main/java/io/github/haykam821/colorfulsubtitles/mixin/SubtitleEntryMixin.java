@@ -15,7 +15,10 @@ public class SubtitleEntryMixin implements ColorHolder {
 	private int textColor = 0;
 
 	@Unique
-	private int backgroundColor = -1;
+	private int backgroundColor = 0;
+
+	@Unique
+	private boolean hasBackgroundColor = false;
 
 	@Override
 	public int getTextColor() {
@@ -35,5 +38,15 @@ public class SubtitleEntryMixin implements ColorHolder {
 	@Override
 	public void setBackgroundColor(int color) {
 		this.backgroundColor = color;
+	}
+
+	@Override
+	public boolean hasBackgroundColor() {
+		return this.hasBackgroundColor;
+	}
+
+	@Override
+	public void setHasBackgroundColor(boolean has) {
+		this.hasBackgroundColor = has;
 	}
 }

@@ -40,13 +40,11 @@ public class SubtitlesHudMixin {
 
 	@ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fill(IIIII)V"), index = 4)
 	private int modifyBackgroundDrawColor(int color) {
-		int backgroundColor = this.iterationEntry.getBackgroundColor();
-
-		if (backgroundColor < 0) {
+		if (!this.iterationEntry.hasBackgroundColor()) {
 			return color;
 		}
 
-		return color | backgroundColor;
+		return this.iterationEntry.getBackgroundColor();
 	}
 
 	@Inject(method = "onPlaySound", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/SubtitleOverlay$Subtitle;refresh(Lnet/minecraft/world/phys/Vec3;)V"), locals = LocalCapture.CAPTURE_FAILHARD)

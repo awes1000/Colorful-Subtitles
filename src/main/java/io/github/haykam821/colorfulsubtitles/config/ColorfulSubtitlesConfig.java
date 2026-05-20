@@ -47,4 +47,16 @@ public class ColorfulSubtitlesConfig {
 	public SubtitleColor getDefaultColor() {
 		return this.defaultColor;
 	}
+
+	public Map<SoundSource, SubtitleColor> getColors() {
+		return this.colors;
+	}
+
+	public static Map<SoundSource, SubtitleColor> getDefaults() {
+		return DEFAULT_COLORS;
+	}
+
+	public static ColorfulSubtitlesConfig create(Map<SoundSource, SubtitleColor> colors, SubtitleColor defaultColor) {
+		return new ColorfulSubtitlesConfig(colors, defaultColor);
+	}
 }

@@ -13,6 +13,11 @@
 		"sources": "https://github.com/haykam821/Colorful-Subtitles"
 	},
 	"environment": "client",
+	"entrypoints": {
+		"modmenu": [
+			"io.github.haykam821.colorfulsubtitles.modmenu.ColorfulSubtitlesModMenu"
+		]
+	},
 	"mixins": [
 		"colorfulsubtitles.mixin.json"
 	],
@@ -28,6 +33,11 @@
 	"icon": "assets/colorfulsubtitles/icon.png",
 	"depends": {
 		"fabricloader": ">=0.19.0",
-		"minecraft": ">=26.1"
+		"minecraft": ">=26.1.2",
+		"java": ">=25"
+	},
+	"recommends": {
+		"modmenu": "*",
+		"cloth-config": "*"
 	}
 }

@@ -25,7 +25,7 @@ public final class ColorfulSubtitlesCodecs {
 		}
 	};
 
-	protected static final Codec<Map<SoundSource, SubtitleColor>> SOUND_SOURCE_TO_SUBTITLE_COLOR = Codec.simpleMap(SOUND_SOURCE, SubtitleColor.CODEC, SOUND_SOURCE_KEYS).codec();
+	public static final Codec<Map<SoundSource, SubtitleColor>> SOUND_SOURCE_TO_SUBTITLE_COLOR = Codec.simpleMap(SOUND_SOURCE, SubtitleColor.CODEC, SOUND_SOURCE_KEYS).codec();
 
 	private ColorfulSubtitlesCodecs() {
 		return;

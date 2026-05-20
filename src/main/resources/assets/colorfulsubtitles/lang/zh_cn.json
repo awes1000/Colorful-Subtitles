@@ -1,0 +1,10 @@
+{
+	"title.colorfulsubtitles.config": "彩色字幕",
+	"category.colorfulsubtitles.categories": "声音分类",
+	"option.colorfulsubtitles.text": "文字颜色",
+	"option.colorfulsubtitles.background": "背景颜色",
+	"option.colorfulsubtitles.has_background": "启用背景颜色",
+	"option.colorfulsubtitles.default.text": "默认文字颜色",
+	"option.colorfulsubtitles.default.background": "默认背景颜色",
+	"option.colorfulsubtitles.default.has_background": "默认启用背景颜色"
+}

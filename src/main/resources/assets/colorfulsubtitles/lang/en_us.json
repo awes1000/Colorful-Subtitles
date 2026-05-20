@@ -1,0 +1,10 @@
+{
+	"title.colorfulsubtitles.config": "Colorful Subtitles",
+	"category.colorfulsubtitles.categories": "Sound Categories",
+	"option.colorfulsubtitles.text": "Text Color",
+	"option.colorfulsubtitles.background": "Background Color",
+	"option.colorfulsubtitles.has_background": "Use Background Color",
+	"option.colorfulsubtitles.default.text": "Default Text Color",
+	"option.colorfulsubtitles.default.background": "Default Background Color",
+	"option.colorfulsubtitles.default.has_background": "Default Use Background Color"
+}
