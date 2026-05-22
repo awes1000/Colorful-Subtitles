@@ -21,6 +21,7 @@ import net.minecraft.client.gui.components.SubtitleOverlay.Subtitle;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.WeighedSoundEvents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
 
 @Mixin(SubtitleOverlay.class)
 @Environment(EnvType.CLIENT)
@@ -35,7 +36,7 @@ public class SubtitlesHudMixin {
 
 	@ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"), index = 4)
 	private int modifyTextDrawColor(int color) {
-		return this.iterationEntry.getTextColor();
+		return ARGB.scaleRGB(this.iterationEntry.getTextColor(), ARGB.red(color) / 255f);
 	}
 
 	@ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fill(IIIII)V"), index = 4)
