@@ -1,4 +1,6 @@
 # Colorful Subtitles
+[![GitHub Release](https://img.shields.io/github/v/release/awes1000/Colorful-Subtitles)](https://github.com/awes1000/Colorful-Subtitles/releases/latest)
+
 Forked for personal use
 
 most codes changed by claude code,maybe mang bugs
