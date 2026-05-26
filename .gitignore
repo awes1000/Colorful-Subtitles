@@ -39,3 +39,4 @@ build/
 
 # intellij idea
 .idea
+CHANGELOG.md
