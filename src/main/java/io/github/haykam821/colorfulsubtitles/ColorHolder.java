@@ -5,7 +5,6 @@ import io.github.haykam821.colorfulsubtitles.config.SubtitleColor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.util.ARGB;
 
 @Environment(EnvType.CLIENT)
 public interface ColorHolder {
@@ -25,7 +24,7 @@ public interface ColorHolder {
 			color = config.getDefaultColor();
 		}
 
-		this.setTextColor(ARGB.opaque(color.getText().getValue()));
+		this.setTextColor(color.getText());
 
 		if (color.getBackground().isPresent()) {
 			this.setBackgroundColor(color.getBackground().get());

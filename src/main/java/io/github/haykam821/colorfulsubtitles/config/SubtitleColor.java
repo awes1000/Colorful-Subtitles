@@ -10,21 +10,27 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.util.ARGB;
 
 public class SubtitleColor {
-	protected static final SubtitleColor DEFAULT = SubtitleColor.ofText(TextColor.fromRgb(0xFFFFFF));
+	protected static final SubtitleColor DEFAULT = SubtitleColor.ofTextArgb(0xFFFFFFFF);
 
 	private static final Codec<Integer> ARGB_HEX_CODEC = Codec.STRING.comapFlatMap(
 		SubtitleColor::parseArgbHex,
 		SubtitleColor::formatArgbHex
 	);
 
+	private static final Codec<Integer> TEXT_ARGB_CODEC = Codec.STRING.comapFlatMap(
+		SubtitleColor::parseTextArgb,
+		SubtitleColor::formatArgbHex
+	);
+
 	private static final Codec<SubtitleColor> RECORD_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			TextColor.CODEC.fieldOf("text").forGetter(color -> color.text),
+			TEXT_ARGB_CODEC.fieldOf("text").forGetter(color -> color.text),
 			ARGB_HEX_CODEC.optionalFieldOf("background").forGetter(color -> color.background)
 	).apply(instance, SubtitleColor::new));
 
-	private static final Codec<SubtitleColor> SIMPLE_CODEC = TextColor.CODEC.xmap(SubtitleColor::ofText, color -> color.text);
+	private static final Codec<SubtitleColor> SIMPLE_CODEC = TEXT_ARGB_CODEC.xmap(SubtitleColor::ofTextArgb, color -> color.text);
 
 	public static final Codec<SubtitleColor> CODEC = Codec.either(RECORD_CODEC, SIMPLE_CODEC).xmap(either -> {
 		return either.map(left -> left, right -> right);
@@ -32,15 +38,15 @@ public class SubtitleColor {
 		return color.background.isEmpty() ? Either.right(color) : Either.left(color);
 	});
 
-	private final TextColor text;
+	private final int text;
 	private final Optional<Integer> background;
 
-	private SubtitleColor(TextColor text, Optional<Integer> background) {
+	private SubtitleColor(int text, Optional<Integer> background) {
 		this.text = text;
 		this.background = background;
 	}
 
-	public TextColor getText() {
+	public int getText() {
 		return this.text;
 	}
 
@@ -53,16 +59,37 @@ public class SubtitleColor {
 		return "SubtitleColor{text=" + this.text + ", background=" + this.background.map(SubtitleColor::formatArgbHex).orElse("none") + "}";
 	}
 
-	public static SubtitleColor ofText(TextColor text) {
+	public static SubtitleColor ofTextArgb(int text) {
 		return new SubtitleColor(text, Optional.empty());
+	}
+
+	public static SubtitleColor ofText(TextColor text) {
+		return SubtitleColor.ofTextArgb(ARGB.opaque(text.getValue()));
 	}
 
 	public static SubtitleColor ofText(ChatFormatting formatting) {
 		return SubtitleColor.ofText(TextColor.fromLegacyFormat(formatting));
 	}
 
-	public static SubtitleColor create(TextColor text, Optional<Integer> background) {
+	public static SubtitleColor create(int text, Optional<Integer> background) {
 		return new SubtitleColor(text, background);
+	}
+
+	private static DataResult<Integer> parseTextArgb(String raw) {
+		String value = raw.startsWith("#") ? raw.substring(1) : raw;
+		if (value.length() == 6 || value.length() == 8) {
+			try {
+				long parsed = Long.parseLong(value, 16);
+				if (value.length() == 6) {
+					return DataResult.success(0xFF000000 | (int) parsed);
+				}
+				return DataResult.success((int) parsed);
+			} catch (NumberFormatException exception) {
+				// Fall back to named Minecraft text colors below.
+			}
+		}
+
+		return TextColor.parseColor(raw).map(color -> ARGB.opaque(color.getValue()));
 	}
 
 	private static DataResult<Integer> parseArgbHex(String raw) {
