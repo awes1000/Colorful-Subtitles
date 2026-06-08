@@ -20,7 +20,10 @@ public interface ColorHolder {
 
 	default void setColor(SoundInstance sound) {
 		ColorfulSubtitlesConfig config = ColorfulSubtitles.getConfig();
-		SubtitleColor color = config.getColorForCategory(sound.getSource());
+		SubtitleColor color = config.getColors().get(sound.getSource());
+		if (color == null) {
+			color = config.getDefaultColor();
+		}
 
 		this.setTextColor(ARGB.opaque(color.getText().getValue()));
 
@@ -28,13 +31,7 @@ public interface ColorHolder {
 			this.setBackgroundColor(color.getBackground().get());
 			this.setHasBackgroundColor(true);
 		} else {
-			SubtitleColor defaultColor = config.getDefaultColor();
-			if (defaultColor.getBackground().isPresent()) {
-				this.setBackgroundColor(defaultColor.getBackground().get());
-				this.setHasBackgroundColor(true);
-			} else {
-				this.setHasBackgroundColor(false);
-			}
+			this.setHasBackgroundColor(false);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package io.github.haykam821.colorfulsubtitles.config;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -31,6 +32,13 @@ public class ColorfulSubtitlesConfig {
 		).apply(instance, ColorfulSubtitlesConfig::new);
 	});
 
+	public static final Codec<ColorfulSubtitlesConfig> FULL_CODEC = RecordCodecBuilder.create(instance -> {
+		return instance.group(
+			ColorfulSubtitlesCodecs.SOUND_SOURCE_TO_SUBTITLE_COLOR.fieldOf("colors").forGetter(config -> config.colors),
+			SubtitleColor.CODEC.fieldOf("default_color").forGetter(config -> config.defaultColor)
+		).apply(instance, ColorfulSubtitlesConfig::new);
+	});
+
 	private final Map<SoundSource, SubtitleColor> colors;
 	private final SubtitleColor defaultColor;
 
@@ -58,5 +66,12 @@ public class ColorfulSubtitlesConfig {
 
 	public static ColorfulSubtitlesConfig create(Map<SoundSource, SubtitleColor> colors, SubtitleColor defaultColor) {
 		return new ColorfulSubtitlesConfig(colors, defaultColor);
+	}
+
+	public static ColorfulSubtitlesConfig withDefaults(ColorfulSubtitlesConfig config) {
+		Map<SoundSource, SubtitleColor> colors = new LinkedHashMap<>(DEFAULT_COLORS);
+		colors.putAll(config.colors);
+
+		return new ColorfulSubtitlesConfig(colors, config.defaultColor);
 	}
 }
