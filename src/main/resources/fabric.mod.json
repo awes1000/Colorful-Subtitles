@@ -5,15 +5,19 @@
 	"name": "Colorful Subtitles",
 	"description": "Changes the color of subtitles based on their sound category.",
 	"authors": [
+		"awes1000",
 		"haykam821"
 	],
 	"contact": {
-		"homepage": "https://github.com/haykam821/Colorful-Subtitles#readme",
-		"issues": "https://github.com/haykam821/Colorful-Subtitles/issues",
-		"sources": "https://github.com/haykam821/Colorful-Subtitles"
+		"homepage": "https://github.com/awes1000/Colorful-Subtitles#readme",
+		"issues": "https://github.com/awes1000/Colorful-Subtitles/issues",
+		"sources": "https://github.com/awes1000/Colorful-Subtitles"
 	},
 	"environment": "client",
 	"entrypoints": {
+		"client": [
+			"io.github.haykam821.colorfulsubtitles.ColorfulSubtitlesClient"
+		],
 		"modmenu": [
 			"io.github.haykam821.colorfulsubtitles.modmenu.ColorfulSubtitlesModMenu"
 		]
@@ -22,22 +26,16 @@
 		"colorfulsubtitles.mixin.json"
 	],
 	"accessWidener": "colorfulsubtitles.accesswidener",
-	"custom": {
-		"modmenu": {
-			"links": {
-				"modmenu.discord": "https://haykam.com/links/discord"
-			}
-		}
-	},
 	"license": "MIT",
 	"icon": "assets/colorfulsubtitles/icon.png",
 	"depends": {
 		"fabricloader": ">=0.19.0",
 		"minecraft": ">=26.1.2",
-		"java": ">=25"
+		"java": ">=25",
+		"fabric-api": ">=${fabric_api_version}",
+		"cloth-config": ">=${cloth_config_version}"
 	},
 	"recommends": {
-		"modmenu": "*",
-		"cloth-config": "*"
+		"modmenu": "*"
 	}
 }

@@ -3,15 +3,19 @@
 
 Forked for personal use
 
-most codes changed by claude code,maybe mang bugs
+Most code in this fork has been updated for personal use, so please test carefully before publishing or sharing builds.
 
 Changes the color of subtitles based on their sound category.
 
-## Requirment 
+## Requirements
 - Fabric Loader 0.19.2+
-- Fabric API 0.149.1+
+- Fabric API 0.149.0+
 - [Cloth Config](https://modrinth.com/mod/cloth-config) 26.1.154+
 - [Mod Menu](https://modrinth.com/mod/modmenu) 18.0.0+ recommended for in-game configuration
+
+## Compatibility notes
+- The subtitle rendering mixin targets Minecraft 26.1.2 internals. Re-test subtitles in game after every Minecraft update.
+- Missing sound categories inherit the default color. Explicit category entries without a background color render without a custom background.
 
 
 ## Usage
