@@ -19,14 +19,18 @@ public interface ColorHolder {
 
 	default void setColor(SoundInstance sound) {
 		ColorfulSubtitlesConfig config = ColorfulSubtitles.getConfig();
+		SubtitleColor defaultColor = config.getDefaultColor();
 		SubtitleColor color = config.getColors().get(sound.getSource());
 		if (color == null) {
-			color = config.getDefaultColor();
+			color = defaultColor;
 		}
 
 		this.setTextColor(color.getText());
 
-		if (color.getBackground().isPresent()) {
+		if (defaultColor.getBackground().isPresent()) {
+			this.setBackgroundColor(defaultColor.getBackground().get());
+			this.setHasBackgroundColor(true);
+		} else if (color.getBackground().isPresent()) {
 			this.setBackgroundColor(color.getBackground().get());
 			this.setHasBackgroundColor(true);
 		} else {

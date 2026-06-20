@@ -36,20 +36,12 @@ public final class ColorfulSubtitlesConfigScreen {
 		ConfigCategory categoriesTab = builder.getOrCreateCategory(Component.translatable("category.colorfulsubtitles.categories"));
 
 		SubtitleColor defaultColor = current.getDefaultColor();
-		int[] defaultText = { defaultColor.getText() };
 		int[] defaultBackground = { defaultColor.getBackground().orElse(DEFAULT_BACKGROUND_ARGB) };
 		boolean[] defaultHasBackground = { defaultColor.getBackground().isPresent() };
 
-		categoriesTab.addEntry(new PaletteColorEntry(
-			Component.translatable("option.colorfulsubtitles.default.text"),
-			defaultText[0],
-			entries.getResetButtonKey(),
-			() -> 0xFFFFFFFF,
-			value -> defaultText[0] = value,
-			true
-		));
 		categoriesTab.addEntry(entries.startBooleanToggle(Component.translatable("option.colorfulsubtitles.default.has_background"), defaultHasBackground[0])
 			.setDefaultValue(false)
+			.setTooltip(Component.translatable("tooltip.colorfulsubtitles.default.has_background"))
 			.setSaveConsumer(value -> defaultHasBackground[0] = value)
 			.build());
 		categoriesTab.addEntry(new PaletteColorEntry(
@@ -69,6 +61,22 @@ public final class ColorfulSubtitlesConfigScreen {
 
 			Component name = Component.translatable("soundCategory." + source.getName());
 
+			var bgToggle = entries.startBooleanToggle(Component.translatable("option.colorfulsubtitles.has_background"), hasBackground[0])
+				.setDefaultValue(false)
+				.setSaveConsumer(value -> hasBackground[0] = value)
+				.setDisplayRequirement(() -> !defaultHasBackground[0])
+				.build();
+
+			var bgPalette = new PaletteColorEntry(
+				Component.translatable("option.colorfulsubtitles.background"),
+				background[0],
+				entries.getResetButtonKey(),
+				() -> DEFAULT_BACKGROUND_ARGB,
+				value -> background[0] = value,
+				true
+			);
+			bgPalette.setDisplayCondition(() -> !defaultHasBackground[0]);
+
 			categoriesTab.addEntry(entries.startSubCategory(name, java.util.List.of(
 				new PaletteColorEntry(
 					Component.translatable("option.colorfulsubtitles.text"),
@@ -78,18 +86,8 @@ public final class ColorfulSubtitlesConfigScreen {
 					value -> text[0] = value,
 					true
 				),
-				entries.startBooleanToggle(Component.translatable("option.colorfulsubtitles.has_background"), hasBackground[0])
-					.setDefaultValue(false)
-					.setSaveConsumer(value -> hasBackground[0] = value)
-					.build(),
-				new PaletteColorEntry(
-					Component.translatable("option.colorfulsubtitles.background"),
-					background[0],
-					entries.getResetButtonKey(),
-					() -> DEFAULT_BACKGROUND_ARGB,
-					value -> background[0] = value,
-					true
-				)
+				bgToggle,
+				bgPalette
 			)).build());
 
 			editedTextColors.put(source, text);
@@ -109,7 +107,7 @@ public final class ColorfulSubtitlesConfigScreen {
 			}
 
 			Optional<Integer> defaultBg = defaultHasBackground[0] ? Optional.of(defaultBackground[0]) : Optional.empty();
-			SubtitleColor newDefault = SubtitleColor.create(defaultText[0], defaultBg);
+			SubtitleColor newDefault = SubtitleColor.create(0xFFFFFFFF, defaultBg);
 
 			ColorfulSubtitles.setConfig(ColorfulSubtitlesConfig.create(newColors, newDefault));
 		});
