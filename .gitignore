@@ -36,4 +36,7 @@ build/
 
 # intellij idea
 .idea
-CHANGELOG.md
+
+# Local AI tooling and backups
+.claude/
+codex-backups/
