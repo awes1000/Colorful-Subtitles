@@ -12,41 +12,41 @@ import net.minecraft.client.gui.components.SubtitleOverlay;
 @Environment(EnvType.CLIENT)
 public class SubtitleEntryMixin implements ColorHolder {
 	@Unique
-	private int textColor = 0;
+	private int colorfulsubtitles$textColor = 0;
 
 	@Unique
-	private int backgroundColor = 0;
+	private int colorfulsubtitles$backgroundColor = 0;
 
 	@Unique
-	private boolean hasBackgroundColor = false;
+	private boolean colorfulsubtitles$hasBackgroundColor = false;
 
 	@Override
 	public int getTextColor() {
-		return this.textColor;
+		return this.colorfulsubtitles$textColor;
 	}
 
 	@Override
 	public void setTextColor(int color) {
-		this.textColor = color;
+		this.colorfulsubtitles$textColor = color;
 	}
 
 	@Override
 	public int getBackgroundColor() {
-		return this.backgroundColor;
+		return this.colorfulsubtitles$backgroundColor;
 	}
 
 	@Override
 	public void setBackgroundColor(int color) {
-		this.backgroundColor = color;
+		this.colorfulsubtitles$backgroundColor = color;
 	}
 
 	@Override
 	public boolean hasBackgroundColor() {
-		return this.hasBackgroundColor;
+		return this.colorfulsubtitles$hasBackgroundColor;
 	}
 
 	@Override
 	public void setHasBackgroundColor(boolean has) {
-		this.hasBackgroundColor = has;
+		this.colorfulsubtitles$hasBackgroundColor = has;
 	}
 }

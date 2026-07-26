@@ -107,7 +107,7 @@ public final class ColorfulSubtitlesConfigScreen {
 			}
 
 			Optional<Integer> defaultBg = defaultHasBackground[0] ? Optional.of(defaultBackground[0]) : Optional.empty();
-			SubtitleColor newDefault = SubtitleColor.create(0xFFFFFFFF, defaultBg);
+			SubtitleColor newDefault = SubtitleColor.create(current.getDefaultColor().getText(), defaultBg);
 
 			ColorfulSubtitles.setConfig(ColorfulSubtitlesConfig.create(newColors, newDefault));
 		});

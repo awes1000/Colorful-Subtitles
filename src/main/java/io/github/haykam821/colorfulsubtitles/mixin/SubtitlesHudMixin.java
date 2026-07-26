@@ -29,14 +29,14 @@ import net.minecraft.util.ARGB;
 @Environment(EnvType.CLIENT)
 public class SubtitlesHudMixin {
 	@Unique
-	private ColorHolder iterationEntry;
+	private ColorHolder colorfulsubtitles$iterationEntry;
 
 	@Unique
 	private static Boolean colorfulsubtitles$modernUiLoaded;
 
 	@Redirect(method = "extractRenderState", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;", ordinal = 2))
 	private Object updateIterationEntry(Iterator<Object> iterator) {
-		return this.iterationEntry = (ColorHolder) iterator.next();
+		return this.colorfulsubtitles$iterationEntry = (ColorHolder) iterator.next();
 	}
 
 	@ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"), index = 4)
@@ -59,11 +59,11 @@ public class SubtitlesHudMixin {
 
 	@ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fill(IIIII)V"), index = 4)
 	private int modifyBackgroundDrawColor(int color) {
-		if (!this.iterationEntry.hasBackgroundColor()) {
+		if (this.colorfulsubtitles$iterationEntry == null || !this.colorfulsubtitles$iterationEntry.hasBackgroundColor()) {
 			return color;
 		}
 
-		return this.iterationEntry.getBackgroundColor();
+		return this.colorfulsubtitles$iterationEntry.getBackgroundColor();
 	}
 
 	@Inject(method = "onPlaySound", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/SubtitleOverlay$Subtitle;refresh(Lnet/minecraft/world/phys/Vec3;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
@@ -79,11 +79,11 @@ public class SubtitlesHudMixin {
 
 	@Unique
 	private int colorfulsubtitles$applySubtitleTextColor(int color) {
-		if (this.iterationEntry == null) {
+		if (this.colorfulsubtitles$iterationEntry == null) {
 			return color;
 		}
 
-		return ARGB.scaleRGB(this.iterationEntry.getTextColor(), ARGB.red(color) / 255f);
+		return ARGB.scaleRGB(this.colorfulsubtitles$iterationEntry.getTextColor(), ARGB.red(color) / 255f);
 	}
 
 	@Unique
