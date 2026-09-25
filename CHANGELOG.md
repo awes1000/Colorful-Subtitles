@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.0
+
+### 适配
+- 迁移到 Minecraft 26.3 / Fabric Loader 0.19.5 / Fabric Loom 1.18.2 / Fabric API 0.161.0 / Cloth Config 26.3.159 / Mod Menu 21.0.0。
+
 ## 1.9.2
 
 ### 新增

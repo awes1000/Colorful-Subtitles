@@ -14,12 +14,12 @@
 
 | 组件 | 当前值 | 定义位置 |
 | --- | --- | --- |
-| Minecraft | 26.2 | `gradle.properties` → `minecraft_version` |
-| Fabric Loader | 0.19.3 | `loader_version` |
-| Fabric Loom | 1.16.2 | `loom_version` |
-| Fabric API | 0.152.2+26.2 | `fabric_api_version` |
-| Cloth Config | 26.2.155 | `cloth_config_version` |
-| Mod Menu | 20.0.0-beta.3 | `modmenu_version` |
+| Minecraft | 26.3 | `gradle.properties` → `minecraft_version` |
+| Fabric Loader | 0.19.5 | `loader_version` |
+| Fabric Loom | 1.18.2 | `loom_version` |
+| Fabric API | 0.161.0+26.3 | `fabric_api_version` |
+| Cloth Config | 26.3.159 | `cloth_config_version` |
+| Mod Menu | 21.0.0 | `modmenu_version` |
 | Java | 25(`options.release = 25`) | `build.gradle` |
 | Gradle | 9.4.0(wrapper) | `gradle/wrapper/gradle-wrapper.properties` |
 | 映射 | Mojang 官方命名(代码/AW 均用 official 名) | — |
@@ -74,7 +74,7 @@ src/main/resources/
 
 ### 4.2 Mixin 层
 - 附加状态一律走 **duck interface**(`ColorHolder`)+ 字段注入(`SubtitleEntryMixin`),不要用 `ThreadLocal`、静态 Map 或反射。
-- `SubtitlesHudMixin` 通过 `@Redirect` iterator.next(ordinal=2)记录当前渲染条目,再用 `@ModifyArg`/`@ModifyExpressionValue` 改写颜色参数。这些注入点**与 26.2 的 `extractRenderState` 字节码强绑定**,是全项目最脆弱的部分——改动或升级后必须实测。
+- `SubtitlesHudMixin` 通过 `@Redirect` iterator.next(ordinal=2)记录当前渲染条目,再用 `@ModifyArg`/`@ModifyExpressionValue` 改写颜色参数。这些注入点**与 26.3 的 `extractRenderState` 字节码强绑定**,是全项目最脆弱的部分——改动或升级后必须实测。
 - Modern UI 兼容:文字颜色有两条互斥路径(原版 `GuiGraphicsExtractor.text` vs Modern UI 的 `ARGB.color`),用 `colorfulsubtitles$isModernUiLoaded()`(惰性缓存 `isModLoaded("modernui")`)分流。新增第三方兼容时沿用此模式:惰性检测 + 注入方法内早退,不要写死 class-load 探测。
 - 文字着色公式:`ARGB.scaleRGB(自定义色, 原颜色红通道/255)`,目的是保留原版淡入淡出(原版把 alpha 编码进颜色通道)。改渲染逻辑时不得破坏淡出效果。
 

@@ -34,7 +34,7 @@ public class SubtitlesHudMixin {
 	@Unique
 	private static Boolean colorfulsubtitles$modernUiLoaded;
 
-	@Redirect(method = "extractRenderState", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;", ordinal = 2))
+	@Redirect(method = "extractRenderState", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;", ordinal = 1))
 	private Object updateIterationEntry(Iterator<Object> iterator) {
 		return this.colorfulsubtitles$iterationEntry = (ColorHolder) iterator.next();
 	}
