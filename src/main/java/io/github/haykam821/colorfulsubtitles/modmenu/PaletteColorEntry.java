@@ -28,6 +28,7 @@ public class PaletteColorEntry extends ColorEntry {
 	private int paletteWidth = 32;
 	private BooleanSupplier displayCondition;
 
+	@SuppressWarnings("deprecation")
 	public PaletteColorEntry(Component fieldName, int value, Component resetButtonKey, Supplier<Integer> defaultValue, Consumer<Integer> saveConsumer, boolean alphaMode) {
 		super(fieldName, value, resetButtonKey, defaultValue, saveConsumer, () -> Optional.empty(), false);
 		this.alphaMode = alphaMode;
@@ -225,15 +226,15 @@ public class PaletteColorEntry extends ColorEntry {
 		int rgb = hsvToRgb(hue, 1, value);
 		if (this.alphaMode) {
 			int alpha = (currentColor() >>> 24) & 0xFF;
-			this.setValue((alpha << 24) | rgb);
+			this.textFieldWidget.setValue(this.getHexColorString((alpha << 24) | rgb));
 		} else {
-			this.setValue(rgb);
+			this.textFieldWidget.setValue(this.getHexColorString(rgb));
 		}
 	}
 
 	private void updateAlpha(double mouseX) {
 		int alpha = Math.round(255 * clamp((float) ((mouseX - this.paletteX) / Math.max(1, this.paletteWidth - 1))));
-		this.setValue((alpha << 24) | (currentColor() & 0xFFFFFF));
+		this.textFieldWidget.setValue(this.getHexColorString((alpha << 24) | (currentColor() & 0xFFFFFF)));
 	}
 
 	private int currentColor() {

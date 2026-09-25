@@ -36,9 +36,18 @@ public final class ColorfulSubtitlesConfigScreen {
 		ConfigCategory categoriesTab = builder.getOrCreateCategory(Component.translatable("category.colorfulsubtitles.categories"));
 
 		SubtitleColor defaultColor = current.getDefaultColor();
+		int[] defaultText = { defaultColor.getText() };
 		int[] defaultBackground = { defaultColor.getBackground().orElse(DEFAULT_BACKGROUND_ARGB) };
 		boolean[] defaultHasBackground = { defaultColor.getBackground().isPresent() };
 
+		categoriesTab.addEntry(new PaletteColorEntry(
+			Component.translatable("option.colorfulsubtitles.default.text"),
+			defaultText[0],
+			entries.getResetButtonKey(),
+			() -> ColorfulSubtitlesConfig.DEFAULT.getDefaultColor().getText(),
+			value -> defaultText[0] = value,
+			true
+		));
 		categoriesTab.addEntry(entries.startBooleanToggle(Component.translatable("option.colorfulsubtitles.default.has_background"), defaultHasBackground[0])
 			.setDefaultValue(false)
 			.setTooltip(Component.translatable("tooltip.colorfulsubtitles.default.has_background"))
@@ -107,7 +116,7 @@ public final class ColorfulSubtitlesConfigScreen {
 			}
 
 			Optional<Integer> defaultBg = defaultHasBackground[0] ? Optional.of(defaultBackground[0]) : Optional.empty();
-			SubtitleColor newDefault = SubtitleColor.create(current.getDefaultColor().getText(), defaultBg);
+			SubtitleColor newDefault = SubtitleColor.create(defaultText[0], defaultBg);
 
 			ColorfulSubtitles.setConfig(ColorfulSubtitlesConfig.create(newColors, newDefault));
 		});

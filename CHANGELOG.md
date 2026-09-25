@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.2
+
+### 新增
+- 配置界面可直接编辑默认文字颜色(default_color.text),不再只能手动改 JSON。
+
+### 修复
+- 消除 PaletteColorEntry 对 Cloth Config 已废弃 API 的编译警告。
+
 ## 1.9.1
 
 ### 修复
